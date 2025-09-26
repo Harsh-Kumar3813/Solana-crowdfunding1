@@ -12,7 +12,7 @@ export default function Page() {
     () => getProvider(publicKey, signTransaction, sendTransaction),
     [publicKey, signTransaction, sendTransaction]
   )
-  // Local form state
+
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -28,7 +28,7 @@ export default function Page() {
       new Promise<void>(async (resolve, reject) => {
         try {
           const { title, description, image_url, goal } = form
-          const tx: any = await createCampaign(
+          const tx = await createCampaign(
             program!,
             publicKey!,
             title,
@@ -37,15 +37,10 @@ export default function Page() {
             Number(goal)
           )
 
-          setForm({
-            title: '',
-            description: '',
-            image_url: '',
-            goal: '',
-          })
+          setForm({ title: '', description: '', image_url: '', goal: '' })
 
-          console.log(tx)
-          resolve(tx)
+          console.log('Transaction Signature:', tx)
+          resolve()
         } catch (error) {
           reject(error)
         }
