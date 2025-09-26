@@ -72,24 +72,7 @@ export const createCampaign = async (
     program.programId
   )
 
-  // ✅ Safely fetch or initialize program state
-  let state
-  try {
-    state = await program.account.programState.fetch(programStatePda)
-  } catch (err) {
-    console.warn('Program state not found. Initializing...')
-    await program.methods
-      .initialize() // 👈 must match your Rust instruction
-      .accounts({
-        programState: programStatePda,
-        authority: publicKey,
-        systemProgram: SystemProgram.programId,
-      })
-      .rpc()
-
-    state = await program.account.programState.fetch(programStatePda)
-  }
-
+  const state = await program.account.programState.fetch(programStatePda)
   const CID = state.campaignCount.add(new BN(1))
 
   const [campaignPda] = PublicKey.findProgramAddressSync(
@@ -99,25 +82,31 @@ export const createCampaign = async (
 
   const goalBN = new BN(goal * 1_000_000_000)
 
-  const tx = await program.methods
-    .createCampaign(title, description, image_url, goalBN)
-    .accountsPartial({
-      programState: programStatePda,
-      campaign: campaignPda,
-      creator: publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .rpc()
+  try {
+    const tx = await program.methods
+      .createCampaign(title, description, image_url, goalBN)
+      .accountsPartial({
+        programState: programStatePda,
+        campaign: campaignPda,
+        creator: publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc()
 
-  const connection = new Connection(
-    program.provider.connection.rpcEndpoint,
-    'confirmed'
-  )
+    // confirm it once
+    const connection = new Connection(program.provider.connection.rpcEndpoint, 'confirmed')
+    await connection.confirmTransaction(tx, 'finalized')
 
-  await connection.confirmTransaction(tx, 'finalized')
-  return tx
+    return tx
+  } catch (err: any) {
+    // 👇 handle the "already processed" case
+    if (err.message?.includes('already been processed')) {
+      console.warn('Transaction already processed, treating as success.')
+      return err.signature ?? 'already-processed'
+    }
+    throw err // rethrow real errors
+  }
 }
-
 
 export const updateCampaign = async (
   program: Program<Fundus>,
@@ -173,6 +162,8 @@ export const deleteCampaign = async (
   await connection.confirmTransaction(tx, 'finalized')
   return tx
 }
+
+
 
 export const updatePlatform = async (
   program: Program<Fundus>,
@@ -285,6 +276,7 @@ export const withdrawFromCampaign = async (
   await connection.confirmTransaction(tx, 'finalized')
   return tx
 }
+
 
 export const fetchActiveCampaigns = async (
   program: Program<Fundus>
