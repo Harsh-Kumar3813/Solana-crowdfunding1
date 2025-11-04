@@ -1,94 +1,90 @@
-# fundus
+# Solana-crowdfunding
+A decentralized crowdfunding platform built on Solana blockchain using Rust and Anchor framework. This project allows users to create and contribute to crowdfunding campaigns securely on-chain.
 
-## Getting Started
+🚀 Features
 
-### Prerequisites
+Create crowdfunding campaigns with a funding goal.
 
-- Node v18.18.0 or higher
+Contribute SOL to active campaigns.
 
-- Rust v1.77.2 or higher
-- Anchor CLI 0.30.1 or higher
-- Solana CLI 1.18.17 or higher
+Track total funds raised.
 
-### Installation
+Secure handling of funds via Solana smart contract (PDA-based).
 
-#### Clone the repo
+Fully tested using Anchor test suite.
 
-```shell
-git clone <repo-url>
-cd <repo-name>
-```
+🛠️ Tech Stack
 
-#### Install Dependencies
+Solana (Blockchain)
 
-```shell
-pnpm install
-```
+Rust (Smart Contract)
 
-#### Start the web app
+Anchor Framework (Program development & testing)
 
-```
-pnpm dev
-```
+Mocha/TypeScript (Anchor tests)
 
-## Apps
+## 📂 Project Structure  
+Solana-crowdfunding/
+├── Anchor.toml # Anchor configuration file
+├── Cargo.toml # Rust dependencies
+├── migrations/ # Deployment scripts
+├── programs/ # Rust smart contract programs
+│ └── crowdfunding/
+│ ├── Cargo.toml
+│ └── src/
+│ └── lib.rs # Main smart contract logic
+├── tests/ # Anchor test files (TypeScript/Mocha)
+│ └── crowdfunding.ts
+└── README.md # Project documentation
 
-### anchor
 
-This is a Solana program written in Rust using the Anchor framework.
 
-#### Commands
 
-You can use any normal anchor commands. Either move to the `anchor` directory and run the `anchor` command or prefix the command with `pnpm`, eg: `pnpm anchor`.
+⚡ Prerequisites
 
-#### Sync the program id:
+Make sure you have the following installed:
 
-Running this command will create a new keypair in the `anchor/target/deploy` directory and save the address to the Anchor config file and update the `declare_id!` macro in the `./src/lib.rs` file of the program.
+Rust
+ (latest stable)
 
-You will manually need to update the constant in `anchor/lib/basic-exports.ts` to match the new program id.
+Solana CLI
+ (≥ v1.18)
 
-```shell
-pnpm anchor keys sync
-```
+Anchor
+ (≥ v0.29.0)
 
-#### Build the program:
+Node.js (≥ 16) & Yarn/NPM
 
-```shell
-pnpm anchor-build
-```
+🔧 Setup & Build
+# Clone the repo
+git clone https://github.com/Harsh-Kumar3813/Solana-crowdfunding.git
 
-#### Start the test validator with the program deployed:
+cd Solana-crowdfunding
 
-```shell
-pnpm anchor-localnet
-```
+# Install dependencies
+yarn install   # or npm install
 
-#### Run the tests
+# Build the smart contract
+anchor build
 
-```shell
-pnpm anchor-test
-```
+# Deploy to localnet
+anchor deploy
 
-#### Deploy to Devnet
 
-```shell
-pnpm anchor deploy --provider.cluster devnet
-```
+🧪 Running Tests
+# Run Anchor tests
+anchor test
 
-### web
+📈 Roadmap
 
-This is a React app that uses the Anchor generated client to interact with the Solana program.
+ Smart contract in Rust
 
-#### Commands
+ Anchor test cases
 
-Start the web app
+ Frontend integration (React/Next.js)
 
-```shell
-pnpm dev
-```
+ Deployment to devnet/mainnet
 
-Build the web app
+🤝 Contributing
 
-```shell
-pnpm build
-```
+Pull requests are welcome! If you’d like to improve functionality, add UI, or extend features, feel free to fork and submit a PR.
