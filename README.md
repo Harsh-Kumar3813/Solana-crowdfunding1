@@ -57,7 +57,7 @@ Node.js (≥ 16) & Yarn/NPM
 
 🔧 Setup & Build
 # Clone the repo
-git clone https://github.com/Harsh-Kumar3813/Solana-crowdfunding.git
+git clone https://github.com/Harsh-Kumar3813/Solana-crowdfunding1.git
 
 cd Solana-crowdfunding
 
