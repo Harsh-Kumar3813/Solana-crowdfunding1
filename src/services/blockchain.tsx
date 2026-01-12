@@ -67,12 +67,12 @@ export const createCampaign = async (
   image_url: string,
   goal: number
 ): Promise<TransactionSignature> => {
-  const [programStatePda] = PublicKey.findProgramAddressSync(
+  const [ProgramStatePda] = PublicKey.findProgramAddressSync(
     [Buffer.from('program_state')],
     program.programId
   )
 
-  const state = await program.account.programState.fetch(programStatePda)
+  const state = await program.account.ProgramState.fetch(ProgramStatePda)
   const CID = state.campaignCount.add(new BN(1))
 
   const [campaignPda] = PublicKey.findProgramAddressSync(
@@ -86,7 +86,7 @@ export const createCampaign = async (
     const tx = await program.methods
       .createCampaign(title, description, image_url, goalBN)
       .accountsPartial({
-        programState: programStatePda,
+        programState: ProgramStatePda,
         campaign: campaignPda,
         creator: publicKey,
         systemProgram: SystemProgram.programId,
@@ -170,7 +170,7 @@ export const updatePlatform = async (
   publicKey: PublicKey,
   percent: number
 ): Promise<TransactionSignature> => {
-  const [programStatePda] = PublicKey.findProgramAddressSync(
+  const [ProgramStatePda] = PublicKey.findProgramAddressSync(
     [Buffer.from('program_state')],
     program.programId
   )
@@ -179,7 +179,7 @@ export const updatePlatform = async (
     .updatePlatformSettings(new BN(percent))
     .accountsPartial({
       updater: publicKey,
-      programState: programStatePda,
+      programState: ProgramStatePda,
     })
     .rpc()
 
@@ -238,7 +238,7 @@ export const withdrawFromCampaign = async (
 ): Promise<TransactionSignature> => {
   const campaign = await program.account.campaign.fetch(pda)
 
-  const [programStatePda] = PublicKey.findProgramAddressSync(
+  const [ProgramStatePda] = PublicKey.findProgramAddressSync(
     [Buffer.from('program_state')],
     program.programId
   )
@@ -253,13 +253,13 @@ export const withdrawFromCampaign = async (
     program.programId
   )
 
-  const programState = await program.account.programState.fetch(programStatePda)
+  const programState = await program.account.programState.fetch(ProgramStatePda)
 
   const withdraw_amount = new BN(Math.round(amount * 1_000_000_000))
   const tx = await program.methods
     .withdraw(campaign.cid, withdraw_amount)
     .accountsPartial({
-      programState: programStatePda,
+      programState: ProgramStatePda,
       campaign: pda,
       transaction: transactionPda,
       creator: publicKey,
@@ -353,12 +353,12 @@ export const fetchAllWithsrawals = async (
 export const fetchProgramState = async (
   program: Program<Fundus>
 ): Promise<ProgramState> => {
-  const [programStatePda] = PublicKey.findProgramAddressSync(
+  const [ProgramStatePda] = PublicKey.findProgramAddressSync(
     [Buffer.from('program_state')],
     program.programId
   )
 
-  const programState = await program.account.programState.fetch(programStatePda)
+  const programState = await program.account.programState.fetch(ProgramStatePda)
 
   const serialized: ProgramState = {
     ...programState,
