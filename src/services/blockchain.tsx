@@ -73,7 +73,7 @@ export const createCampaign = async (
   )
 
   const state = await program.account.ProgramState.fetch(ProgramStatePda)
-  const CID = state.campaignCount.add(new BN(1))
+  const CID = state.campaign_Count.add(new BN(1))
 
   const [campaignPda] = PublicKey.findProgramAddressSync(
     [Buffer.from('campaign'), CID.toArrayLike(Buffer, 'le', 8)],
