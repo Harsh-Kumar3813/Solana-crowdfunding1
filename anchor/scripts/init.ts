@@ -31,19 +31,19 @@ const main = async (cluster: string) => {
 
   // Load the program
   const program = new anchor.Program<Fundus>(idl as any, provider)
-  const [programStatePda] = PublicKey.findProgramAddressSync(
+  const [ProgramStatePda] = PublicKey.findProgramAddressSync(
     [Buffer.from('program_state')],
     program.programId
   )
 
   try {
-    const state = await program.account.ProgramState.fetch(programStatePda)
+    const state = await program.account.ProgramState.fetch(ProgramStatePda)
     console.log(`Program already initialized, status: ${state.initialized}`)
   } catch (error) {
     const tx = await program.methods
       .initialize()
       .accountsPartial({
-        programState: programStatePda,
+        programState: ProgramStatePda,
         deployer: provider.wallet.publicKey,
         systemProgram: SystemProgram.programId,
       })
