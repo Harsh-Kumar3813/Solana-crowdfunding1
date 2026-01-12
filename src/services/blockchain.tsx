@@ -73,7 +73,7 @@ export const createCampaign = async (
   )
 
   const state = await program.account.ProgramState.fetch(ProgramStatePda)
-  const CID = state.campaign_Count.add(new BN(1))
+  const CID = state.campaign_count.add(new BN(1))
 
   const [campaignPda] = PublicKey.findProgramAddressSync(
     [Buffer.from('campaign'), CID.toArrayLike(Buffer, 'le', 8)],
@@ -121,13 +121,14 @@ export const updateCampaign = async (
 
   const goalBN = new BN(goal * 1_000_000_000)
   const tx = await program.methods
-    .updateCampaign(campaign.cid, title, description, image_url, goalBN)
-    .accountsPartial({
-      campaign: pda,
-      creator: publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .rpc()
+  .updateCampaign(campaign.cid, title, description, image_url, goalBN)
+  .accountsPartial({
+    campaign: pda,
+    creator: publicKey,
+    system_program: SystemProgram.programId,
+  })
+  .rpc()
+
 
   const connection = new Connection(
     program.provider.connection.rpcEndpoint,
@@ -146,13 +147,14 @@ export const deleteCampaign = async (
   const campaign = await program.account.campaign.fetch(pda)
 
   const tx = await program.methods
-    .deleteCampaign(campaign.cid)
-    .accountsPartial({
-      campaign: pda,
-      creator: publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .rpc()
+  .deleteCampaign(campaign.cid)
+  .accountsPartial({
+    campaign: pda,
+    creator: publicKey,
+    system_program: SystemProgram.programId,
+  })
+  .rpc()
+
 
   const connection = new Connection(
     program.provider.connection.rpcEndpoint,
