@@ -86,7 +86,7 @@ export const createCampaign = async (
     const tx = await program.methods
       .create_campaign(title, description, image_url, goalBN)
       .accountsPartial({
-        programState: ProgramStatePda,
+        ProgramState: ProgramStatePda,
         campaign: campaignPda,
         creator: publicKey,
         systemProgram: SystemProgram.programId,
