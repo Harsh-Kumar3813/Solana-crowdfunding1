@@ -37,21 +37,21 @@ const main = async (cluster: string) => {
   )
 
   try {
-    const state = await program.account.ProgramState.fetch(ProgramStatePda)
-    console.log(`Program already initialized, status: ${state.initialized}`)
-  } catch (error) {
-    const tx = await program.methods
-      .initialize()
-      .accountsPartial({
-        programState: ProgramStatePda,
-        deployer: provider.wallet.publicKey,
-        systemProgram: SystemProgram.programId,
-      })
-      .rpc()
+  const state = await program.account.ProgramState.fetch(ProgramStatePda)
+  console.log(`Program already initialized, status: ${state.initialized}`)
+} catch (error) {
+  const tx = await program.methods
+    .initialize()
+    .accountsPartial({
+      program_state: ProgramStatePda,
+      deployer: provider.wallet.publicKey,
+      system_program: SystemProgram.programId,
+    })
+    .rpc()
 
-    await connection.confirmTransaction(tx, 'finalized')
-    console.log('Program initialized successfully.', tx)
-  }
+  await connection.confirmTransaction(tx, 'finalized')
+  console.log('Program initialized successfully.', tx)
+}
 }
 
 const cluster: string = process.env.NEXT_PUBLIC_CLUSTER || 'localhost'
