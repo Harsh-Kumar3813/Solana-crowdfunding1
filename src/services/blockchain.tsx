@@ -362,7 +362,7 @@ export const fetchProgramState = async (
 
   const serialized: ProgramState = {
     ...programState,
-    campaignCount: programState.campaignCount.toNumber(),
+    campaign_count: programState.campaign_count.toNumber(),
     platformFee: programState.platformFee.toNumber(),
     platformAddress: programState.platformAddress.toBase58(),
   }
