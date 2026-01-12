@@ -86,7 +86,7 @@ export const createCampaign = async (
     const tx = await program.methods
       .create_campaign(title, description, image_url, goalBN)
       .accountsPartial({
-        ProgramState: ProgramStatePda,
+        program_state: ProgramStatePda,
         campaign: campaignPda,
         creator: publicKey,
         systemProgram: SystemProgram.programId,
@@ -181,7 +181,7 @@ export const updatePlatform = async (
     .updatePlatformSettings(new BN(percent))
     .accountsPartial({
       updater: publicKey,
-      programState: ProgramStatePda,
+      program_state: ProgramStatePda,
     })
     .rpc()
 
@@ -255,17 +255,17 @@ export const withdrawFromCampaign = async (
     program.programId
   )
 
-  const programState = await program.account.programState.fetch(ProgramStatePda)
+  const ProgramState = await program.account.programState.fetch(ProgramStatePda)
 
   const withdraw_amount = new BN(Math.round(amount * 1_000_000_000))
   const tx = await program.methods
     .withdraw(campaign.cid, withdraw_amount)
     .accountsPartial({
-      programState: ProgramStatePda,
+      program_state: ProgramStatePda,
       campaign: pda,
       transaction: transactionPda,
       creator: publicKey,
-      platformAddress: programState.platformAddress,
+      platformAddress: ProgramState.platformAddress,
       systemProgram: SystemProgram.programId,
     })
     .rpc()
