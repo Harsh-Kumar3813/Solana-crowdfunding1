@@ -89,7 +89,7 @@ export const createCampaign = async (
         program_state: ProgramStatePda,
         campaign: campaignPda,
         creator: publicKey,
-        SystemProgram: SystemProgram.programId,
+        system_program: SystemProgram.programId,
       })
       .rpc()
 
