@@ -121,7 +121,7 @@ export const updateCampaign = async (
 
   const goalBN = new BN(goal * 1_000_000_000)
   const tx = await program.methods
-  .updateCampaign(campaign.cid, title, description, image_url, goalBN)
+  .update_campaign(campaign.cid, title, description, image_url, goalBN)
   .accountsPartial({
     campaign: pda,
     creator: publicKey,
