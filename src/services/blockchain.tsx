@@ -147,7 +147,7 @@ export const deleteCampaign = async (
   const campaign = await program.account.Campaign.fetch(pda)
 
   const tx = await program.methods
-  .deleteCampaign(campaign.cid)
+  .delete_campaign(campaign.cid)
   .accountsPartial({
     campaign: pda,
     creator: publicKey,
